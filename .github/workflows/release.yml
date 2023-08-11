@@ -1,0 +1,36 @@
+name: Publish GitHub release
+
+on:
+  workflow_run:
+    workflows: ["Run Unit Tests"]
+    types:
+      - completed
+  push:
+    # This ensures the workflow runs only on tag pushes
+    tags:
+      - '*'
+    # This ensures the workflow runs only when the tag is pushed on the master branch
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: |
+      startsWith(github.event.workflow_run.head_branch, '0.') &&
+      github.event.workflow_run.conclusion == 'success'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set release version
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: "${{ env.RELEASE_VERSION }}"
+          tag_name: ${{ env.RELEASE_VERSION }}
