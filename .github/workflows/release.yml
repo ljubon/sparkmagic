@@ -25,10 +25,10 @@ jobs:
 
       - name: Bump version and push tag
         id: bump
-        uses: jaumann/github-bumpversion-action@v0.0.7
+        run: |
+          bump2version --new-version ${{ github.ref_name }} patch --config-file .bumpversion.cfg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NEW_VERSION: ${{ github.ref_name }}
 
       - name: Push changes
         id: push
