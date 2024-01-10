@@ -7,6 +7,12 @@
 - Enable automated test run as required step for release process
 - Enable basic DependaBot scanning for pip packages and GitHub actions used in CI
 
+## 0.21.1
+
+### Updates
+
+- Automate release proces (test patch upgrade)
+
 ## 0.21.0
 
 ### Updates
